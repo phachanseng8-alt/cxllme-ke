@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NAGI SHOP</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{colors:{brand:'#0ea5e9',brandDark:'#0284c7'},fontFamily:{sans:['Noto Sans Lao','sans-serif']}}}}
+</script>
+<style>
+::-webkit-scrollbar{display:none}
+.glass-header{background:rgba(255,255,255,.95);backdrop-filter:blur(10px)}
+.inp{width:100%;border:1px solid #e5e7eb;border-radius:12px;padding:10px 14px;font-size:14px;margin-top:8px;outline:none}
+.inp:focus{border-color:#0ea5e9}
+</style>
+</head>
+<body class="bg-gray-50 text-gray-800 pb-20">
+
+<!-- Header -->
+<header class="sticky top-0 z-40 glass-header shadow-sm px-4 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-2">
+    <img src="https://ui-avatars.com/api/?name=NAGI&background=0ea5e9&color=fff&rounded=true" class="w-10 h-10 rounded-full border-2 border-brand" alt="Logo">
+    <span class="font-bold text-lg tracking-wide">NAGI SHOP</span>
+  </div>
+  <div class="flex items-center gap-3">
+    <a href="https://m.me/yourpage" target="_blank" class="text-brand text-xl"><i class="fa-regular fa-comment-dots"></i></a>
+    <button id="btnAuth" data-act="auth" class="bg-brand text-white px-4 py-1.5 rounded-lg text-sm font-semibold shadow-md">ເຂົ້າສູ່ລະບົບ</button>
+    <button data-act="menu" class="text-gray-600 text-xl p-2"><i class="fa-solid fa-bars"></i></button>
+  </div>
+</header>
+
+<!-- Side menu -->
+<div id="sideMenu" class="fixed inset-0 bg-black/50 z-50 hidden">
+  <div id="menuContent" class="bg-white w-4/5 h-full rounded-r-2xl p-6 shadow-xl -translate-x-full transition-transform duration-300">
+    <div class="flex items-center justify-between mb-8 border-b pb-4">
+      <span class="font-bold text-lg">NAGI SHOP</span>
+      <button data-act="menu" class="text-gray-400"><i class="fa-solid fa-xmark text-2xl"></i></button>
+    </div>
+    <nav class="space-y-4 text-gray-700 font-medium">
+      <a data-act="home" class="flex items-center gap-4"><i class="fa-solid fa-house w-6"></i> ໜ້າຫຼັກ</a>
+      <a data-act="topup" class="flex items-center gap-4 text-brand"><i class="fa-solid fa-wallet w-6"></i> ເຕີມເງິນ</a>
+      <a data-act="orders" class="flex items-center gap-4"><i class="fa-solid fa-clock-rotate-left w-6"></i> ປະຫວັດການສັ່ງຊື້</a>
+      <a data-act="tx" class="flex items-center gap-4"><i class="fa-solid fa-receipt w-6"></i> ປະຫວັດເງິນ</a>
+      <a data-act="profile" class="flex items-center gap-4"><i class="fa-solid fa-user w-6"></i> ໂປຣໄຟລ໌</a>
+      <a id="adminLink" data-act="admin" class="hidden items-center gap-4 text-red-500"><i class="fa-solid fa-user-shield w-6"></i> ແອດມິນ</a>
+      <a href="https://m.me/yourpage" target="_blank" class="flex items-center gap-4"><i class="fa-solid fa-headset w-6"></i> ຕິດຕໍ່ເຮົາ</a>
+    </nav>
+  </div>
+</div>
+
+<main class="px-4 py-4 space-y-6">
+  <div>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="bg-blue-100 text-brand px-3 py-1 rounded-lg text-sm font-semibold"><i class="fa-solid fa-layer-group mr-1"></i> ໝວດໝູ່ສິນຄ້າ</span>
+      <span id="catCount" class="bg-gray-200 text-gray-600 px-2 py-1 rounded-lg text-xs">0 ໝວດໝູ່</span>
+    </div>
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-gray-400"></i>
+      <input id="search" type="text" placeholder="ຄົ້ນຫາສິນຄ້າ..." class="w-full bg-white border border-gray-200 rounded-xl py-2.5 pl-10 pr-4 text-sm outline-none focus:border-brand">
+    </div>
+  </div>
+
+  <div class="space-y-3">
+    <div class="relative rounded-xl overflow-hidden shadow-sm h-28 bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center p-4 text-white">
+      <div><p class="text-xs font-semibold">ສິນຄ້າແມັບ</p><h2 class="text-2xl font-black italic">BLOX FRUITS</h2></div>
+    </div>
+    <div class="relative rounded-xl overflow-hidden shadow-sm h-28 bg-gradient-to-r from-green-400 to-emerald-600 flex items-center p-4 text-white">
+      <div><p class="text-xs font-semibold">ສິນຄ້າແມັບ</p><h2 class="text-xl font-black italic">GROW A GARDEN 2</h2></div>
+    </div>
+  </div>
+
+  <div id="pills" class="flex gap-2 overflow-x-auto pb-2"></div>
+  <div id="grid" class="grid grid-cols-2 gap-3"><p class="text-sm text-gray-400 col-span-2 text-center py-6">ກຳລັງໂຫຼດ...</p></div>
+
+  <footer class="text-center text-xs text-gray-400 py-6 mt-8 border-t border-gray-200">
+    <p>© 2026 NAGI SHOP</p>
+    <div class="flex justify-center items-center gap-1 mt-2">
+      <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span><span class="text-green-500 font-semibold">ONLINE</span>
+    </div>
+  </footer>
+</main>
+
+<a href="https://m.me/yourpage" target="_blank" class="fixed bottom-24 right-4 bg-brand text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg z-30"><i class="fa-brands fa-facebook-messenger text-2xl"></i></a>
+
+<!-- Bottom nav -->
+<nav class="fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around items-center py-2 z-30">
+  <a data-act="home" class="flex flex-col items-center text-brand"><i class="fa-solid fa-store text-lg"></i><span class="text-[10px] mt-1">ຮ້ານຄ້າ</span></a>
+  <a data-act="topup" class="flex flex-col items-center text-gray-400"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[10px] mt-1">ເຕີມເງິນ</span></a>
+  <a data-act="orders" class="flex flex-col items-center text-gray-400"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[10px] mt-1">ປະຫວັດ</span></a>
+  <a data-act="profile" class="flex flex-col items-center text-gray-400"><i class="fa-regular fa-user text-lg"></i><span class="text-[10px] mt-1">ໂປຣໄຟລ໌</span></a>
+</nav>
+
+<!-- Bottom sheet -->
+<div id="sheet" class="fixed inset-0 bg-black/50 z-[60] hidden items-end">
+  <div class="bg-white w-full rounded-t-2xl p-5 max-h-[85vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-3">
+      <h3 id="sheetTitle" class="font-bold text-lg"></h3>
+      <button data-act="close" class="text-gray-400 text-2xl"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+<div id="toast" class="fixed top-16 left-1/2 -translate-x-1/2 z-[70] hidden px-4 py-2 rounded-lg text-sm text-white shadow-lg"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== ໃສ່ຄ່າຂອງເຈົ້າບ່ອນນີ້ =====
+const SUPABASE_URL = 'https://rznfokqpifuzdlhszvzf.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_3V9hrnpil3u-8mp265Diww_Dc_jPnGa';
+// ================================
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString('en-US');
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const dt = s => new Date(s).toLocaleString('en-GB', {dateStyle:'short', timeStyle:'short'});
+const SL = {pending:'ລໍຖ້າ', done:'ສຳເລັດ', cancelled:'ຍົກເລີກ'};
+const S = {user:null, profile:null, products:[], cat:'all', q:''};
+
+function toast(t, ok){
+  const el = $('toast'); el.textContent = t;
+  el.className = 'fixed top-16 left-1/2 -translate-x-1/2 z-[70] px-4 py-2 rounded-lg text-sm text-white shadow-lg ' + (ok ? 'bg-green-600' : 'bg-red-500');
+  clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add('hidden'), 3500);
+}
+function openSheet(title, html){
+  $('sheetTitle').textContent = title; $('sheetBody').innerHTML = html;
+  $('sheet').classList.remove('hidden'); $('sheet').classList.add('flex');
+}
+function closeSheet(){ $('sheet').classList.add('hidden'); $('sheet').classList.remove('flex'); }
+function toggleMenu(){
+  const m = $('sideMenu'), c = $('menuContent');
+  if (m.classList.contains('hidden')){ m.classList.remove('hidden'); setTimeout(() => c.classList.remove('-translate-x-full'), 10); }
+  else { c.classList.add('-translate-x-full'); setTimeout(() => m.classList.add('hidden'), 300); }
+}
+const needLogin = () => { if (S.user) return false; authSheet(); return true; };
+
+/* ---------- ສິນຄ້າ ---------- */
+async function loadProducts(){
+  const { data, error } = await sb.from('products').select('*').order('game').order('price');
+  if (error) { $('grid').innerHTML = `<p class="col-span-2 text-center text-red-500 text-sm">${esc(error.message)}</p>`; return; }
+  S.products = data; renderProducts();
+}
+function renderProducts(){
+  const games = [...new Set(S.products.map(p => p.game))];
+  $('catCount').textContent = games.length + ' ໝວດໝູ່';
+  const pill = (v, t) => `<button data-cat="${esc(v)}" class="${S.cat===v?'bg-brand text-white shadow-md':'bg-white text-gray-600 border border-gray-200'} px-4 py-1.5 rounded-full text-sm whitespace-nowrap">${esc(t)}</button>`;
+  $('pills').innerHTML = pill('all','ທັງໝົດ') + games.map(g => pill(g,g)).join('');
+  const q = S.q.toLowerCase();
+  const list = S.products.filter(p => p.active && (S.cat==='all' || p.game===S.cat) && (p.name+' '+p.game).toLowerCase().includes(q));
+  $('grid').innerHTML = list.length ? list.map(p => {
+    const out = p.stock < 1;
+    return `<div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+      <div class="relative h-32 bg-gray-100">
+        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(p.game)}&background=eee&color=333" class="w-full h-full object-cover" alt="">
+        ${out ? '<span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] px-2 py-0.5 rounded">ສິນຄ້າໝົດ</span>' : ''}
+      </div>
+      <div class="p-3 flex flex-col flex-grow">
+        <p class="text-[11px] text-gray-400">${esc(p.game)}</p>
+        <h3 class="text-sm font-semibold line-clamp-2">${esc(p.name)}</h3>
+        <p class="text-brand font-bold mt-1">${fmt(p.price)} K</p>
+        <p class="mt-1 text-xs text-gray-500"><i class="fa-solid fa-box"></i> ເຫຼືອ ${p.stock} ອັນ</p>
+        <button ${out?'disabled':''} data-buy="${p.id}" class="mt-3 w-full ${out?'bg-gray-300 cursor-not-allowed':'bg-brand'} text-white py-2 rounded-lg text-sm font-semibold">${out?'ສິນຄ້າໝົດ':'ຊື້ເລີຍ'}</button>
+      </div></div>`;
+  }).join('') : '<p class="col-span-2 text-center text-gray-400 text-sm py-6">ບໍ່ພົບສິນຄ້າ</p>';
+}
+
+/* ---------- ບັນຊີ ---------- */
+async function loadProfile(){
+  if (!S.user){ S.profile = null; return updateHeader(); }
+  const { data } = await sb.from('profiles').select('*').eq('id', S.user.id).single();
+  S.profile = data; updateHeader();
+}
+function updateHeader(){
+  const b = $('btnAuth');
+  b.textContent = S.profile ? fmt(S.profile.balance) + ' K' : 'ເຂົ້າສູ່ລະບົບ';
+  b.dataset.act = S.user ? 'profile' : 'auth';
+  const al = $('adminLink'); const on = !!S.profile?.is_admin;
+  al.classList.toggle('hidden', !on); al.classList.toggle('flex', on);
+}
+function authSheet(mode='login'){
+  const su = mode === 'signup';
+  openSheet(su ? 'ສະໝັກສະມາຊິກ' : 'ເຂົ້າສູ່ລະບົບ', `
+    ${su ? '<input id="aName" class="inp" placeholder="ຊື່" autocomplete="name">' : ''}
+    <input id="aEmail" type="email" class="inp" placeholder="ອີເມວ" autocomplete="email">
+    <input id="aPass" type="password" class="inp" placeholder="ລະຫັດຜ່ານ (ຢ່າງໜ້ອຍ 6 ຕົວ)" autocomplete="${su?'new-password':'current-password'}">
+    <button data-act="${su?'doSignup':'doLogin'}" class="mt-4 w-full bg-brand text-white py-2.5 rounded-xl font-semibold">${su?'ສະໝັກ':'ເຂົ້າສູ່ລະບົບ'}</button>
+    <button data-act="${su?'toLogin':'toSignup'}" class="mt-2 w-full text-sm text-gray-500 py-2">${su?'ມີບັນຊີແລ້ວ? ເຂົ້າສູ່ລະບົບ':'ຍັງບໍ່ມີບັນຊີ? ສະໝັກສະມາຊິກ'}</button>
+    ${su ? '' : '<button data-act="forgot" class="w-full text-sm text-brand py-1">ລືມລະຫັດຜ່ານ?</button>'}`);
+}
+async function doLogin(){
+  const { error } = await sb.auth.signInWithPassword({ email: $('aEmail').value.trim(), password: $('aPass').value });
+  if (error) return toast(/confirm/i.test(error.message) ? 'ຍັງບໍ່ໄດ້ຢືນຢັນອີເມວ — ກວດກ່ອງຈົດໝາຍ' : 'ອີເມວ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກ');
+  closeSheet(); toast('ເຂົ້າສູ່ລະບົບສຳເລັດ', true);
+}
+async function doSignup(){
+  const { data, error } = await sb.auth.signUp({ email: $('aEmail').value.trim(), password: $('aPass').value, options:{ data:{ full_name: $('aName').value.trim() } } });
+  if (error) return toast(error.message);
+  closeSheet();
+  toast(data.session ? 'ສະໝັກສຳເລັດ' : 'ສະໝັກແລ້ວ! ກວດອີເມວເພື່ອຢືນຢັນ', true);
+}
+
+
+/* ---------- ລືມລະຫັດຜ່ານ ---------- */
+function forgotSheet(){
+  openSheet('ຣີເຊັດລະຫັດຜ່ານ', `
+    <p class="text-sm text-gray-600">ໃສ່ອີເມວທີ່ສະໝັກ ເພື່ອຮັບລິ້ງຕັ້ງລະຫັດຜ່ານໃໝ່</p>
+    <input id="fEmail" type="email" class="inp" placeholder="ອີເມວ" autocomplete="email">
+    <button data-act="doForgot" class="mt-4 w-full bg-brand text-white py-2.5 rounded-xl font-semibold">ສົ່ງລິ້ງ</button>
+    <button data-act="toLogin" class="mt-2 w-full text-sm text-gray-500 py-2">ກັບໄປເຂົ້າສູ່ລະບົບ</button>`);
+}
+async function doForgot(){
+  const email = $('fEmail').value.trim();
+  if (!email) return toast('ໃສ່ອີເມວກ່ອນ');
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+  if (error) return toast(/rate/i.test(error.message) ? 'ສົ່ງຖີ່ເກີນໄປ ລໍຖ້າສັກຄູ່ແລ້ວລອງໃໝ່' : error.message);
+  closeSheet(); toast('ສົ່ງລິ້ງໄປອີເມວແລ້ວ ກວດກ່ອງຈົດໝາຍ (ລວມ Spam)', true);
+}
+function newPassSheet(){
+  openSheet('ຕັ້ງລະຫັດຜ່ານໃໝ່', `
+    <input id="nPass" type="password" class="inp" placeholder="ລະຫັດຜ່ານໃໝ່ (ຢ່າງໜ້ອຍ 6 ຕົວ)" autocomplete="new-password">
+    <input id="nPass2" type="password" class="inp" placeholder="ຢືນຢັນລະຫັດຜ່ານໃໝ່" autocomplete="new-password">
+    <button data-act="doNewPass" class="mt-4 w-full bg-brand text-white py-2.5 rounded-xl font-semibold">ບັນທຶກ</button>`);
+}
+async function doNewPass(){
+  const a = $('nPass').value, b = $('nPass2').value;
+  if (a.length < 6) return toast('ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ');
+  if (a !== b) return toast('ລະຫັດບໍ່ກົງກັນ');
+  const { error } = await sb.auth.updateUser({ password: a });
+  if (error) return toast(error.message);
+  closeSheet(); toast('ປ່ຽນລະຫັດຜ່ານສຳເລັດ', true);
+}
+
+/* ---------- ຊື້ ---------- */
+function buySheet(id){
+  if (needLogin()) return;
+  const p = S.products.find(x => x.id == id); if (!p) return;
+  openSheet('ຢືນຢັນການຊື້', `
+    <div class="bg-gray-50 rounded-xl p-3 text-sm">
+      <p class="text-gray-400 text-xs">${esc(p.game)}</p>
+      <p class="font-semibold">${esc(p.name)}</p>
+      <p class="text-brand font-bold">${fmt(p.price)} K</p>
+    </div>
+    <p class="text-xs text-gray-500 mt-3">ຍອດເງິນຂອງເຈົ້າ: <b>${fmt(S.profile?.balance ?? 0)} K</b></p>
+    <input id="gid" class="inp" placeholder="ໄອດີເກມຂອງເຈົ້າ" inputmode="numeric">
+    <button data-confirm="${p.id}" class="mt-4 w-full bg-brand text-white py-2.5 rounded-xl font-semibold">ຢືນຢັນຊື້</button>`);
+}
+async function confirmBuy(id, btn){
+  const gid = $('gid').value.trim();
+  if (!gid) return toast('ໃສ່ໄອດີເກມກ່ອນ');
+  btn.disabled = true;
+  const { error } = await sb.rpc('buy_product', { p_product: Number(id), p_game_id: gid });
+  btn.disabled = false;
+  if (error) return toast(/check|balance|violates/i.test(error.message) ? 'ຍອດເງິນບໍ່ພໍ' : error.message);
+  closeSheet(); toast('ສັ່ງຊື້ສຳເລັດ!', true);
+  loadProfile(); loadProducts();
+}
+
+/* ---------- ປະຫວັດ / ໂປຣໄຟລ໌ ---------- */
+async function ordersSheet(){
+  if (needLogin()) return;
+  openSheet('ປະຫວັດການສັ່ງຊື້', '<p class="text-sm text-gray-400">ກຳລັງໂຫຼດ...</p>');
+  const { data } = await sb.from('orders').select('*, products(name,game)').eq('user_id', S.user.id).order('created_at',{ascending:false}).limit(50);
+  $('sheetBody').innerHTML = data?.length ? data.map(o => `
+    <div class="flex justify-between py-3 border-b text-sm">
+      <div><b>${esc(o.products?.name)}</b><div class="text-xs text-gray-400">${esc(o.products?.game)} · ID ${esc(o.game_id)}<br>${dt(o.created_at)}</div></div>
+      <div class="text-right"><b>${fmt(o.price)} K</b><div class="text-xs text-gray-400">${esc(SL[o.status]||o.status)}</div></div>
+    </div>`).join('') : '<p class="text-sm text-gray-400">ຍັງບໍ່ມີການສັ່ງຊື້</p>';
+}
+async function txSheet(){
+  if (needLogin()) return;
+  openSheet('ປະຫວັດເງິນ', '<p class="text-sm text-gray-400">ກຳລັງໂຫຼດ...</p>');
+  const { data } = await sb.from('transactions').select('*').eq('user_id', S.user.id).order('created_at',{ascending:false}).limit(50);
+  const L = {topup:'ເຕີມເງິນ', purchase:'ຊື້ສິນຄ້າ', refund:'ຄືນເງິນ'};
+  $('sheetBody').innerHTML = data?.length ? data.map(t => `
+    <div class="flex justify-between py-3 border-b text-sm">
+      <div><b>${L[t.type]||esc(t.type)}</b><div class="text-xs text-gray-400">${esc(t.note||'')} ${dt(t.created_at)}</div></div>
+      <b class="${t.amount>0?'text-green-600':'text-red-500'}">${t.amount>0?'+':''}${fmt(t.amount)} K</b>
+    </div>`).join('') : '<p class="text-sm text-gray-400">ຍັງບໍ່ມີລາຍການ</p>';
+}
+function topupSheet(){
+  if (needLogin()) return;
+  openSheet('ເຕີມເງິນ', `
+    <div class="bg-brand text-white rounded-xl p-4"><p class="text-xs opacity-80">ຍອດເງິນ</p><p class="text-3xl font-bold">${fmt(S.profile?.balance ?? 0)} K</p></div>
+    <p class="text-sm text-gray-600 mt-3">ໂອນເງິນແລ້ວສົ່ງສະລິບໃຫ້ແອດມິນທາງ Messenger ພ້ອມອີເມວທີ່ສະໝັກ. ແອດມິນຈະເຕີມຍອດໃຫ້.</p>
+    <a href="https://m.me/yourpage" target="_blank" class="mt-4 block text-center bg-brand text-white py-2.5 rounded-xl font-semibold">ຕິດຕໍ່ແອດມິນ</a>`);
+}
+function profileSheet(){
+  if (needLogin()) return;
+  openSheet('ໂປຣໄຟລ໌', `
+    <p class="font-semibold">${esc(S.profile?.full_name || 'ສະມາຊິກ')}</p>
+    <p class="text-sm text-gray-500">${esc(S.user.email)}</p>
+    <p class="mt-3 text-sm">ຍອດເງິນ: <b class="text-brand">${fmt(S.profile?.balance ?? 0)} K</b></p>
+    <button data-act="logout" class="mt-5 w-full border border-red-300 text-red-500 py-2.5 rounded-xl font-semibold">ອອກຈາກລະບົບ</button>`);
+}
+
+
+/* ---------- ແອດມິນ ---------- */
+const A = {tab:'users', users:[], q:''};
+function adminSheet(){
+  if (needLogin()) return;
+  if (!S.profile?.is_admin) return toast('ສະເພາະແອດມິນ');
+  openSheet('ແອດມິນ', `<div class="flex gap-2 mb-3">${[['users','ລູກຄ້າ'],['products','ສິນຄ້າ'],['orders','ອໍເດີ']].map(([k,t]) => `<button data-adm="tab:${k}" id="admT-${k}" class="flex-1 py-1.5 rounded-lg text-sm border">${t}</button>`).join('')}</div><div id="admBody"></div>`);
+  admTab(A.tab);
+}
+async function admTab(tab){
+  A.tab = tab;
+  ['users','products','orders'].forEach(k => { const b = $('admT-'+k); if (b) b.className = 'flex-1 py-1.5 rounded-lg text-sm border ' + (k===tab ? 'bg-brand text-white border-brand' : 'text-gray-600'); });
+  $('admBody').innerHTML = '<p class="text-sm text-gray-400">ກຳລັງໂຫຼດ...</p>';
+  if (tab === 'users') await admLoadUsers(); else if (tab === 'products') admProducts(); else admOrders();
+}
+async function admLoadUsers(){
+  const { data, error } = await sb.rpc('admin_users');
+  if (error) return $('admBody').innerHTML = `<p class="text-red-500 text-sm">${esc(error.message)}</p>`;
+  A.users = data;
+  $('admBody').innerHTML = `<input id="admQ" class="inp" placeholder="ຄົ້ນຫາຊື່ ຫຼື ອີເມວ" value="${esc(A.q)}"><div id="admList"></div>`;
+  admUserList();
+}
+function admUserList(){
+  const q = A.q.toLowerCase();
+  const l = A.users.filter(u => ((u.full_name||'')+' '+u.email).toLowerCase().includes(q));
+  $('admList').innerHTML = l.length ? l.map(u => `
+    <div class="flex justify-between items-center py-3 border-b text-sm">
+      <div><b>${esc(u.full_name||'-')}</b><div class="text-xs text-gray-400">${esc(u.email)}</div><div class="text-xs">ຍອດ: <b class="text-brand">${fmt(u.balance)} K</b></div></div>
+      <button data-adm="topup:${u.id}" class="bg-brand text-white px-3 py-1.5 rounded-lg text-xs">+ ເຕີມເງິນ</button>
+    </div>`).join('') : '<p class="text-sm text-gray-400 py-3">ບໍ່ພົບ</p>';
+}
+async function admTopup(id){
+  const u = A.users.find(x => x.id === id);
+  const amt = Number(String(prompt(`ເຕີມເງິນໃຫ້ ${u?.email}\nຈຳນວນ (ກີບ):`) || '').replace(/,/g,''));
+  if (!amt || amt <= 0) return;
+  const { error } = await sb.rpc('admin_topup', { p_user: id, p_amount: amt, p_note: 'ແອດມິນເຕີມເງິນ' });
+  if (error) return toast(error.message);
+  toast('ເຕີມເງິນສຳເລັດ', true);
+  await admLoadUsers(); loadProfile();
+}
+function admProducts(){
+  $('admBody').innerHTML = `<button data-adm="add:" class="w-full bg-brand text-white py-2 rounded-lg text-sm mb-2">+ ເພີ່ມສິນຄ້າ</button>` +
+  (S.products.map(p => `
+    <div class="flex justify-between items-center py-3 border-b text-sm ${p.active?'':'opacity-50'}">
+      <div><b>${esc(p.name)}</b><div class="text-xs text-gray-400">${esc(p.game)} · ${fmt(p.price)} K · ເຫຼືອ ${p.stock}</div></div>
+      <div class="flex gap-1"><button data-adm="edit:${p.id}" class="border px-2 py-1 rounded text-xs">ແກ້ໄຂ</button><button data-adm="toggle:${p.id}" class="border px-2 py-1 rounded text-xs">${p.active?'ປິດ':'ເປີດ'}</button></div>
+    </div>`).join('') || '<p class="text-sm text-gray-400">ຍັງບໍ່ມີສິນຄ້າ</p>');
+}
+async function admProductDone(error, msg){
+  if (error) return toast(error.message);
+  toast(msg, true); await loadProducts(); admProducts();
+}
+async function admAdd(){
+  const game = (prompt('ຊື່ເກມ (ເຊັ່ນ Free Fire):') || '').trim(); if (!game) return;
+  const name = (prompt('ຊື່ສິນຄ້າ (ເຊັ່ນ 100 ເພັດ):') || '').trim(); if (!name) return;
+  const price = Number(prompt('ລາຄາ (ກີບ):')); const stock = Number(prompt('ຈຳນວນສະຕັອກ:'));
+  if (!(price > 0) || !(stock >= 0)) return toast('ລາຄາ/ສະຕັອກບໍ່ຖືກ');
+  const { error } = await sb.from('products').insert({ game, name, price, stock });
+  admProductDone(error, 'ເພີ່ມສິນຄ້າແລ້ວ');
+}
+async function admEdit(id){
+  const p = S.products.find(x => x.id == id); if (!p) return;
+  const price = Number(prompt('ລາຄາ (ກີບ):', p.price)); const stock = Number(prompt('ສະຕັອກ:', p.stock));
+  if (!(price > 0) || !(stock >= 0)) return toast('ລາຄາ/ສະຕັອກບໍ່ຖືກ');
+  const { error } = await sb.from('products').update({ price, stock }).eq('id', id);
+  admProductDone(error, 'ບັນທຶກແລ້ວ');
+}
+async function admToggle(id){
+  const p = S.products.find(x => x.id == id); if (!p) return;
+  const { error } = await sb.from('products').update({ active: !p.active }).eq('id', id);
+  admProductDone(error, p.active ? 'ປິດສິນຄ້າແລ້ວ' : 'ເປີດສິນຄ້າແລ້ວ');
+}
+async function admOrders(){
+  const { data, error } = await sb.from('orders').select('*, products(name,game), profiles(full_name)').order('created_at',{ascending:false}).limit(50);
+  if (error) return $('admBody').innerHTML = `<p class="text-red-500 text-sm">${esc(error.message)}</p>`;
+  $('admBody').innerHTML = data.length ? data.map(o => `
+    <div class="py-3 border-b text-sm">
+      <div class="flex justify-between"><b>#${o.id} ${esc(o.products?.name)}</b><b>${fmt(o.price)} K</b></div>
+      <div class="text-xs text-gray-400">${esc(o.profiles?.full_name||'-')} · ${esc(o.products?.game)} · ID ${esc(o.game_id)} · ${dt(o.created_at)}</div>
+      <select data-adm-order="${o.id}" data-prev="${esc(o.status)}" ${o.status==='cancelled'?'disabled':''} class="mt-2 border rounded-lg px-2 py-1 text-xs">
+        ${['pending','done','cancelled'].map(k => `<option value="${k}" ${o.status===k?'selected':''}>${SL[k]}${k==='cancelled'?' (ຄືນເງິນ)':''}</option>`).join('')}
+      </select>
+    </div>`).join('') : '<p class="text-sm text-gray-400">ຍັງບໍ່ມີອໍເດີ</p>';
+}
+document.addEventListener('change', async e => {
+  const sel = e.target.closest('[data-adm-order]'); if (!sel) return;
+  if (sel.value === 'cancelled' && !confirm('ຍົກເລີກອໍເດີ ແລະຄືນເງິນໃຫ້ລູກຄ້າ?')) { sel.value = sel.dataset.prev; return; }
+  const { error } = await sb.rpc('admin_set_order', { p_order: Number(sel.dataset.admOrder), p_status: sel.value });
+  if (error) { toast(error.message); sel.value = sel.dataset.prev; return; }
+  toast('ອັບເດດແລ້ວ', true); admOrders(); loadProducts();
+});
+document.addEventListener('input', e => { if (e.target.id === 'admQ'){ A.q = e.target.value; admUserList(); } });
+
+/* ---------- ເຫດການ ---------- */
+const ACT = {
+  menu: toggleMenu, close: closeSheet, auth: () => authSheet(), toLogin: () => authSheet('login'), toSignup: () => authSheet('signup'),
+  doLogin, doSignup, forgot: forgotSheet, doForgot, doNewPass, admin: adminSheet, orders: ordersSheet, tx: txSheet, topup: topupSheet, profile: profileSheet,
+  home: () => window.scrollTo({top:0, behavior:'smooth'}),
+  logout: async () => { await sb.auth.signOut(); closeSheet(); toast('ອອກຈາກລະບົບແລ້ວ', true); }
+};
+document.addEventListener('click', e => {
+  const t = e.target;
+  if (t === $('sheet')) return closeSheet();
+  const buy = t.closest('[data-buy]'); if (buy) return buySheet(buy.dataset.buy);
+  const cf = t.closest('[data-confirm]'); if (cf) return confirmBuy(cf.dataset.confirm, cf);
+  const ad = t.closest('[data-adm]');
+  if (ad){ const [k, v] = ad.dataset.adm.split(':'); return ({tab:admTab, topup:admTopup, add:admAdd, edit:admEdit, toggle:admToggle})[k]?.(v); }
+  const cat = t.closest('[data-cat]'); if (cat){ S.cat = cat.dataset.cat; return renderProducts(); }
+  const a = t.closest('[data-act]');
+  if (a && ACT[a.dataset.act]){
+    if (!$('sideMenu').classList.contains('hidden') && a.dataset.act !== 'menu') toggleMenu();
+    ACT[a.dataset.act]();
+  }
+});
+$('search').addEventListener('input', e => { S.q = e.target.value; renderProducts(); });
+
+sb.auth.onAuthStateChange((_e, session) => {
+  S.user = session?.user ?? null;
+  if (_e === 'PASSWORD_RECOVERY') setTimeout(newPassSheet, 0);
+  setTimeout(() => { loadProfile(); loadProducts(); }, 0);
+});
+loadProducts();
+</script>
+</body>
+</html>
